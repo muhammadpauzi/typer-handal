@@ -27,3 +27,9 @@
     opacity: 1;
   }
 }
+
+.input-hidden {
+  position: absolute;
+  z-index: -999;
+  opacity: 0;
+}

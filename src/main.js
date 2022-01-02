@@ -32,6 +32,7 @@ const generateParagraph = (manyWords = 50) => {
 };
 
 const generateElementOfWord = (paragraph = "") => {
+  typingText.innerHTML = "";
   paragraph.split("").map((char) => {
     const spanTag = document.createElement("span");
     spanTag.textContent = char;
@@ -54,10 +55,6 @@ const updateTimer = () => {
 };
 
 const updateTyping = () => {
-  // for restart
-  inputParagraph.value = "";
-  typingText.innerHTML = "";
-
   const chars = typingText.querySelectorAll("span");
   let typedChars = inputParagraph.value.split("")[charIndex];
   if (charIndex < chars.length - 1 && timeLeft > 0) {
@@ -102,6 +99,7 @@ const restart = () => {
   const paragraph = generateParagraph();
   generateElementOfWord(paragraph);
   clearInterval(timer);
+  inputParagraph.value = "";
 
   charIndex = 0;
   mistakes = 0;
