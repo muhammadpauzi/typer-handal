@@ -5,12 +5,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "compile-tailwindcss": "tailwindcss -i ./src/tailwind.css -o ./src/tailwind.css"
+    "compile-tailwindcss": "tailwindcss -c ./tailwind.config.js -i ./src/tailwind.css -o ./src/tailwind.css"
   },
   "devDependencies": {
     "vite": "^2.7.2"
   },
-  "dependencies": {
-    "tailwindcss": "^3.0.8"
-  }
+  "dependencies": {}
 }
