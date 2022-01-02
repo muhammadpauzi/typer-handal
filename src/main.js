@@ -2,11 +2,24 @@ import "./tailwindcss/tailwind.min.css";
 import "./style.css";
 
 import { WORDS } from "./words";
-import { inputParagraph, mistakeElement, typingText } from "./elements";
+import {
+  inputParagraph,
+  mistakeElement,
+  typingText,
+  timeLeftElement,
+  wpmElement,
+  cpmElement,
+} from "./elements";
 import { CORRECT_CLASS, INCORRECT_CLASS } from "./constants";
 
 let charIndex = 0;
 let mistakes = 0;
+
+let timer;
+const maxTime = 60;
+let timeLeft = maxTime;
+
+let isTyping = false;
 
 const generateParagraph = (manyWords = 50) => {
   let words = [];
@@ -30,9 +43,22 @@ const setFocusingToInputParagraph = () => {
   typingText.addEventListener("clcik", () => inputParagraph.focus());
 };
 
+const updateTimer = () => {
+  if (timeLeft > 0) {
+    timeLeft--;
+    timeLeftElement.textContent = timeLeft + "s";
+  } else {
+    clearInterval(timer);
+  }
+};
+
 const updateTyping = () => {
   const chars = typingText.querySelectorAll("span");
   let typedChars = inputParagraph.value.split("")[charIndex];
+  if (!isTyping) {
+    timer = setInterval(updateTimer, 1000);
+    isTyping = true;
+  }
   // if user has not entered any char or passed backspace
   if (typedChars == null) {
     charIndex--;
