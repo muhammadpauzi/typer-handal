@@ -80,6 +80,7 @@ const updateTyping = () => {
   chars[charIndex].classList.add("active");
 
   mistakeElement.textContent = mistakes;
+  cpmElement.textContent = charIndex - mistakes;
 };
 
 const main = () => {
