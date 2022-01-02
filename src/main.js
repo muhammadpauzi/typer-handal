@@ -9,6 +9,7 @@ import {
   timeLeftElement,
   wpmElement,
   cpmElement,
+  tryAgainElement,
 } from "./elements";
 import { CORRECT_CLASS, INCORRECT_CLASS } from "./constants";
 
@@ -53,39 +54,64 @@ const updateTimer = () => {
 };
 
 const updateTyping = () => {
+  // for restart
+  inputParagraph.value = "";
+  typingText.innerHTML = "";
+
   const chars = typingText.querySelectorAll("span");
   let typedChars = inputParagraph.value.split("")[charIndex];
-  if (!isTyping) {
-    timer = setInterval(updateTimer, 1000);
-    isTyping = true;
-  }
-  // if user has not entered any char or passed backspace
-  if (typedChars == null) {
-    charIndex--;
-    if (chars[charIndex].classList.contains(INCORRECT_CLASS)) {
-      mistakes--;
+  if (charIndex < characters.length - 1 && timeLeft > 0) {
+    if (!isTyping) {
+      timer = setInterval(updateTimer, 1000);
+      isTyping = true;
     }
-    chars[charIndex].classList.remove(CORRECT_CLASS, INCORRECT_CLASS);
-  } else {
-    // if correct
-    if (chars[charIndex].textContent === typedChars) {
-      chars[charIndex].classList.add(CORRECT_CLASS);
+    // if user has not entered any char or passed backspace
+    if (typedChars == null) {
+      charIndex--;
+      if (chars[charIndex].classList.contains(INCORRECT_CLASS)) {
+        mistakes--;
+      }
+      chars[charIndex].classList.remove(CORRECT_CLASS, INCORRECT_CLASS);
     } else {
-      mistakes++;
-      chars[charIndex].classList.add(INCORRECT_CLASS);
+      // if correct
+      if (chars[charIndex].textContent === typedChars) {
+        chars[charIndex].classList.add(CORRECT_CLASS);
+      } else {
+        mistakes++;
+        chars[charIndex].classList.add(INCORRECT_CLASS);
+      }
+      charIndex++;
     }
-    charIndex++;
-  }
-  chars.forEach((span) => span.classList.remove("active"));
-  chars[charIndex].classList.add("active");
+    chars.forEach((span) => span.classList.remove("active"));
+    chars[charIndex].classList.add("active");
 
-  let wpm = Math.round(
-    ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
-  );
-  wpm = wpm < 0 || !wpm || wpm == Infinity ? 0 : wpm;
+    let wpm = Math.round(
+      ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
+    );
+    wpm = wpm < 0 || !wpm || wpm == Infinity ? 0 : wpm;
+    mistakeElement.textContent = mistakes;
+    wpmElement.textContent = wpm;
+    cpmElement.textContent = charIndex - mistakes;
+  } else {
+    inputParagraph.value = "";
+    clearInterval(timer);
+  }
+};
+
+const restart = () => {
+  const paragraph = generateParagraph();
+  generateElementOfWord(paragraph);
+  clearInterval(timer);
+
+  charIndex = 0;
+  mistakes = 0;
+  timeLeft = maxTime;
+  isTyping = false;
+
+  timeLeftElement.textContent = timeLeft + "s";
   mistakeElement.textContent = mistakes;
-  wpmElement.textContent = wpm;
-  cpmElement.textContent = charIndex - mistakes;
+  wpmElement.textContent = 0;
+  cpmElement.textContent = 0;
 };
 
 const main = () => {
@@ -94,6 +120,7 @@ const main = () => {
   setFocusingToInputParagraph();
 
   inputParagraph.addEventListener("input", updateTyping);
+  tryAgainElement.addEventListener("click", restart);
 };
 
 main();
