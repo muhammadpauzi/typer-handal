@@ -1,3 +1,29 @@
 * {
   font-family: "Inter", sans-serif;
 }
+
+#typingText span {
+  position: relative;
+}
+
+#typingText span.active {
+  color: #8b5cf6;
+}
+
+#typingText span.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  opacity: 0;
+  background-color: #8b5cf6;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
