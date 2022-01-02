@@ -79,7 +79,12 @@ const updateTyping = () => {
   chars.forEach((span) => span.classList.remove("active"));
   chars[charIndex].classList.add("active");
 
+  let wpm = Math.round(
+    ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
+  );
+  wpm = wpm < 0 || !wpm || wpm == Infinity ? 0 : wpm;
   mistakeElement.textContent = mistakes;
+  wpmElement.textContent = wpm;
   cpmElement.textContent = charIndex - mistakes;
 };
 
