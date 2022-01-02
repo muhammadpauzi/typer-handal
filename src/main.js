@@ -60,7 +60,7 @@ const updateTyping = () => {
 
   const chars = typingText.querySelectorAll("span");
   let typedChars = inputParagraph.value.split("")[charIndex];
-  if (charIndex < characters.length - 1 && timeLeft > 0) {
+  if (charIndex < chars.length - 1 && timeLeft > 0) {
     if (!isTyping) {
       timer = setInterval(updateTimer, 1000);
       isTyping = true;
